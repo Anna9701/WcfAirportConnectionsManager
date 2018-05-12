@@ -1,6 +1,7 @@
 ﻿using AirportResources;
 using AirportResourcesService;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace WcfAirportManagerLib
@@ -15,23 +16,20 @@ namespace WcfAirportManagerLib
             airConnectionsDatabase = new AirConnectionsDatabase(csvPath);
         }
 
-        public string GetData(int value)
+        public IList<AirConnection> GetAirConnections(string portA, string portB)
         {
-            return string.Format("You entered: {0}", value);
+            IList<AirConnection> list = new List<AirConnection>();
+            foreach (AirConnection conn in airConnectionsDatabase.GetAirConnections(portA, portB))
+            {
+                list.Add(conn);
+            }
+            return list;
         }
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
+        public IList<AirConnection> GetAirConnections(string portA, string portB, DateTime from, DateTime to)
         {
-            
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
+            throw new NotImplementedException();
         }
+
     }
 }

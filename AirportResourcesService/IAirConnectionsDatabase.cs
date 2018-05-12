@@ -4,9 +4,10 @@ namespace AirportResourcesService
 {
     public interface IAirConnectionsDatabase
     {
-        Dictionary<int, IAirConnection> AirConnections { get; }
+        IList<IAirConnection> AirConnections { get; }
         string CsvPath { get; }
 
         void LoadAirConnections();
+        IList<IAirConnection> GetAirConnections(string portA, string portB);
     }
 }

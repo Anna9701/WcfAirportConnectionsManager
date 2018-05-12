@@ -2,6 +2,7 @@
 
 namespace AirportResourcesService
 {
+
     public interface IAirConnection
     {
         string AirportA { get; }

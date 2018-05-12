@@ -4,6 +4,6 @@ namespace AirportResourcesService
 {
     public interface IAirConnectionsReader
     {
-        Dictionary<int, IAirConnection> LoadDatabase(string path);
+        IList<IAirConnection> LoadDatabase(string path);
     }
 }
