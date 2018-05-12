@@ -11,11 +11,13 @@ namespace WcfAirportManagerLib
         [OperationContract(Name = "GetAllAirConnections")]
         [FaultContract(typeof(InvalidInputFault))]
         [FaultContract(typeof(NoConnectionsFault))]
+        [FaultContract(typeof(InvalidAirportFault))]
         IList<AirConnection> GetAirConnections(string portA, string portB);
 
         [OperationContract(Name = "GetAirConnections")]
         [FaultContract(typeof(InvalidInputFault))]
         [FaultContract(typeof(NoConnectionsFault))]
+        [FaultContract(typeof(InvalidAirportFault))]
         IList<AirConnection> GetAirConnections(string portA, string portB, DateTime from, DateTime to);
     }
 }

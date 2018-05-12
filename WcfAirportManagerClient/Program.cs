@@ -18,8 +18,14 @@ namespace WcfAirportManagerClient
             } catch (FaultException<WcfAirportManagerLib.NoConnectionsFault> ex)
             {
                 Console.Error.WriteLine(ex.Message);
+            } catch (FaultException<WcfAirportManagerLib.InvalidInputFault> ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+            } catch (FaultException<WcfAirportManagerLib.InvalidAirportFault> ex)
+            {
+                Console.Error.WriteLine(ex.Message);
             }
-
+             
             client.Close();
             System.Console.ReadKey();
         }
