@@ -47,7 +47,15 @@ namespace WcfAirportManagerLib
 
         public IList<AirConnection> GetAirConnections(string portA, string portB, DateTime from, DateTime to)
         {
-            throw new NotImplementedException();
+            CheckValidityOfAirports(portA, portB);
+            IList<AirConnection> list = new List<AirConnection>();
+            foreach (AirConnection conn in airConnectionsDatabase.GetAirConnections(portA, portB, from, to))
+            {
+                list.Add(conn);
+            }
+            if (list.Count == 0)
+                throw new FaultException<NoConnectionsFault>(new NoConnectionsFault(), new FaultReason("There is no any connection between those Airports!"));
+            return list;
         }
 
     }

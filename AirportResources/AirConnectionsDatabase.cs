@@ -49,5 +49,18 @@ namespace AirportResources
 
             return connections;
         }
+
+        public IList<IAirConnection> GetAirConnections (string portA, string portB, DateTime departureTime, DateTime arrivalTime)
+        {
+            IList<IAirConnection> allConnections = GetAirConnections(portA, portB);
+            IList<IAirConnection> connections = new List<IAirConnection>();
+            foreach (var conn in allConnections)
+            {
+                if (departureTime >= conn.DepartureTime && departureTime < conn.ArrivalTime)
+                    if (arrivalTime > conn.DepartureTime && arrivalTime <= conn.ArrivalTime)
+                        connections.Add(conn);
+            }
+            return connections;
+        }
     }
 }

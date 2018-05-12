@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AirportResourcesService
 {
@@ -10,5 +11,6 @@ namespace AirportResourcesService
         void LoadAirConnections();
         IList<IAirConnection> GetAirConnections(string portA, string portB);
         bool ContainsAirport(string name);
+        IList<IAirConnection> GetAirConnections(string portA, string portB, DateTime departureTime, DateTime arrivalTime);
     }
 }
