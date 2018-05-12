@@ -44,7 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AirportManager.cs" />
     <Compile Include="AirportService.cs" />
+    <Compile Include="InvalidInputException.cs" />
+    <Compile Include="ServiceClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
