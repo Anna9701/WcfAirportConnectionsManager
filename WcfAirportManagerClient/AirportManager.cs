@@ -105,6 +105,11 @@ namespace WcfAirportManagerClient
             foreach (var conn in connections)
             {
                 Console.Out.WriteLine(String.Format("From: {0}\t To: {1}\t Departure: {2}\t Arrival: {3}", conn.AirportA, conn.AirportB, conn.DepartureTime, conn.ArrivalTime));
+                foreach (var conn2 in conn.Connections)
+                {
+                    Console.Out.WriteLine(String.Format("From: {0}\t To: {1}\t Departure: {2}\t Arrival: {3}", conn2.AirportA, conn2.AirportB, conn2.DepartureTime, conn2.ArrivalTime));
+                }
+                Console.Out.WriteLine();
             }
         }
 

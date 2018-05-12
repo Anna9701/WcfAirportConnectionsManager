@@ -18,6 +18,6 @@ namespace WcfAirportManagerLib
         [FaultContract(typeof(InvalidInputFault))]
         [FaultContract(typeof(NoConnectionsFault))]
         [FaultContract(typeof(InvalidAirportFault))]
-        IList<AirConnection> GetAirConnections(string portA, string portB, DateTime from, DateTime to);
+        IList<AirConnection> GetAirConnections(string portA, string portB, DateTime departure, DateTime arrival);
     }
 }

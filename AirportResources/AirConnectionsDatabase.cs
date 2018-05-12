@@ -41,6 +41,7 @@ namespace AirportResources
 
             foreach (var conn in AirConnections)
             {
+                //((AirConnection)conn).Connections.Clear();
                 if (conn.AirportA.Equals(portA) && conn.AirportB.Equals(portB))
                 {
                     connections.Add(conn);
@@ -49,6 +50,35 @@ namespace AirportResources
 
             return connections;
         }
+
+        public IList<IAirConnection> GetIndirectAirConnections(string portA, string portB)
+        {
+            IList<IAirConnection> list1 = new List<IAirConnection>();
+            IList<IAirConnection> list2 = new List<IAirConnection>();
+            foreach (var conn in AirConnections)
+            {
+                if (conn.AirportA.Equals(portA))
+                    list1.Add(conn);
+                if (conn.AirportB.Equals(portB))
+                    list2.Add(conn);
+            }
+            IList<IAirConnection> list3 = new List<IAirConnection>();
+            foreach (var conn in list1)
+            {
+                foreach (var conn2 in list2)
+                {
+                    if (conn.AirportB.Equals(conn2.AirportA))
+                    {
+                        AirConnection result = (AirConnection)((AirConnection)conn).Clone();
+                        result.Connections.Add((AirConnection)conn2);
+                        list3.Add(result);
+                    }
+                }
+            }
+            return list3;
+        }
+
+
 
         public IList<IAirConnection> GetAirConnections (string portA, string portB, DateTime departureTime, DateTime arrivalTime)
         {

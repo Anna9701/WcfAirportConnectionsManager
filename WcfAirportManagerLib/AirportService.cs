@@ -26,10 +26,16 @@ namespace WcfAirportManagerLib
             {
                 list.Add(conn);
             }
+            foreach(AirConnection conn in airConnectionsDatabase.GetIndirectAirConnections(portA, portB))
+            {
+                list.Add(conn);
+            }
+
             if (list.Count == 0)
             {
                 throw new FaultException<NoConnectionsFault>(new NoConnectionsFault(), new FaultReason("There is no any connection between those Airports!"));
             }
+            
             return list;
         }
 

@@ -27,6 +27,8 @@ namespace AirportResources
         
         private System.DateTime ArrivalTimeField;
         
+        private AirportResources.AirConnection[] ConnectionsField;
+        
         private System.DateTime DepartureTimeField;
         
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData
@@ -77,6 +79,19 @@ namespace AirportResources
             set
             {
                 this.ArrivalTimeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public AirportResources.AirConnection[] Connections
+        {
+            get
+            {
+                return this.ConnectionsField;
+            }
+            set
+            {
+                this.ConnectionsField = value;
             }
         }
         
@@ -317,10 +332,10 @@ public interface IAirportService
     [System.ServiceModel.FaultContractAttribute(typeof(WcfAirportManagerLib.InvalidInputFault), Action="http://tempuri.org/IAirportService/GetAirConnectionsInvalidInputFaultFault", Name="InvalidInputFault", Namespace="http://schemas.datacontract.org/2004/07/WcfAirportManagerLib")]
     [System.ServiceModel.FaultContractAttribute(typeof(WcfAirportManagerLib.NoConnectionsFault), Action="http://tempuri.org/IAirportService/GetAirConnectionsNoConnectionsFaultFault", Name="NoConnectionsFault", Namespace="http://schemas.datacontract.org/2004/07/WcfAirportManagerLib")]
     [System.ServiceModel.FaultContractAttribute(typeof(WcfAirportManagerLib.InvalidAirportFault), Action="http://tempuri.org/IAirportService/GetAirConnectionsInvalidAirportFaultFault", Name="InvalidAirportFault", Namespace="http://schemas.datacontract.org/2004/07/WcfAirportManagerLib")]
-    AirportResources.AirConnection[] GetAirConnections(string portA, string portB, System.DateTime from, System.DateTime to);
+    AirportResources.AirConnection[] GetAirConnections(string portA, string portB, System.DateTime departure, System.DateTime arrival);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAirportService/GetAirConnections", ReplyAction="http://tempuri.org/IAirportService/GetAirConnectionsResponse")]
-    System.Threading.Tasks.Task<AirportResources.AirConnection[]> GetAirConnectionsAsync(string portA, string portB, System.DateTime from, System.DateTime to);
+    System.Threading.Tasks.Task<AirportResources.AirConnection[]> GetAirConnectionsAsync(string portA, string portB, System.DateTime departure, System.DateTime arrival);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -367,13 +382,13 @@ public partial class AirportServiceClient : System.ServiceModel.ClientBase<IAirp
         return base.Channel.GetAllAirConnectionsAsync(portA, portB);
     }
     
-    public AirportResources.AirConnection[] GetAirConnections(string portA, string portB, System.DateTime from, System.DateTime to)
+    public AirportResources.AirConnection[] GetAirConnections(string portA, string portB, System.DateTime departure, System.DateTime arrival)
     {
-        return base.Channel.GetAirConnections(portA, portB, from, to);
+        return base.Channel.GetAirConnections(portA, portB, departure, arrival);
     }
     
-    public System.Threading.Tasks.Task<AirportResources.AirConnection[]> GetAirConnectionsAsync(string portA, string portB, System.DateTime from, System.DateTime to)
+    public System.Threading.Tasks.Task<AirportResources.AirConnection[]> GetAirConnectionsAsync(string portA, string portB, System.DateTime departure, System.DateTime arrival)
     {
-        return base.Channel.GetAirConnectionsAsync(portA, portB, from, to);
+        return base.Channel.GetAirConnectionsAsync(portA, portB, departure, arrival);
     }
 }

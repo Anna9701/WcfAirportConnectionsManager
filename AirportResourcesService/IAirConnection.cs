@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AirportResourcesService
 {
@@ -9,5 +10,6 @@ namespace AirportResourcesService
         string AirportB { get; }
         DateTime ArrivalTime { get; }
         DateTime DepartureTime { get; }
+        //IList<IAirConnection> Connections { get; }
     }
 }

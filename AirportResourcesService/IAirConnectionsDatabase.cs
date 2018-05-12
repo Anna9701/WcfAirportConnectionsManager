@@ -12,5 +12,6 @@ namespace AirportResourcesService
         IList<IAirConnection> GetAirConnections(string portA, string portB);
         bool ContainsAirport(string name);
         IList<IAirConnection> GetAirConnections(string portA, string portB, DateTime departureTime, DateTime arrivalTime);
+        IList<IAirConnection> GetIndirectAirConnections(string portA, string portB);
     }
 }
