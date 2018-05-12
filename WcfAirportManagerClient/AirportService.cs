@@ -94,6 +94,143 @@ namespace AirportResources
         }
     }
 }
+namespace WcfAirportManagerLib
+{
+    using System.Runtime.Serialization;
+    
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="InvalidInputFault", Namespace="http://schemas.datacontract.org/2004/07/WcfAirportManagerLib")]
+    public partial class InvalidInputFault : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private string DescriptionField;
+        
+        private string MessageField;
+        
+        private bool ResultField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Description
+        {
+            get
+            {
+                return this.DescriptionField;
+            }
+            set
+            {
+                this.DescriptionField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Message
+        {
+            get
+            {
+                return this.MessageField;
+            }
+            set
+            {
+                this.MessageField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Result
+        {
+            get
+            {
+                return this.ResultField;
+            }
+            set
+            {
+                this.ResultField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="NoConnectionsFault", Namespace="http://schemas.datacontract.org/2004/07/WcfAirportManagerLib")]
+    public partial class NoConnectionsFault : object, System.Runtime.Serialization.IExtensibleDataObject
+    {
+        
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private string DescriptionField;
+        
+        private string MessageField;
+        
+        private bool ResultField;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData
+        {
+            get
+            {
+                return this.extensionDataField;
+            }
+            set
+            {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Description
+        {
+            get
+            {
+                return this.DescriptionField;
+            }
+            set
+            {
+                this.DescriptionField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Message
+        {
+            get
+            {
+                return this.MessageField;
+            }
+            set
+            {
+                this.MessageField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Result
+        {
+            get
+            {
+                return this.ResultField;
+            }
+            set
+            {
+                this.ResultField = value;
+            }
+        }
+    }
+}
 
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -102,12 +239,16 @@ public interface IAirportService
 {
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAirportService/GetAllAirConnections", ReplyAction="http://tempuri.org/IAirportService/GetAllAirConnectionsResponse")]
+    [System.ServiceModel.FaultContractAttribute(typeof(WcfAirportManagerLib.InvalidInputFault), Action="http://tempuri.org/IAirportService/GetAllAirConnectionsInvalidInputFaultFault", Name="InvalidInputFault", Namespace="http://schemas.datacontract.org/2004/07/WcfAirportManagerLib")]
+    [System.ServiceModel.FaultContractAttribute(typeof(WcfAirportManagerLib.NoConnectionsFault), Action="http://tempuri.org/IAirportService/GetAllAirConnectionsNoConnectionsFaultFault", Name="NoConnectionsFault", Namespace="http://schemas.datacontract.org/2004/07/WcfAirportManagerLib")]
     AirportResources.AirConnection[] GetAllAirConnections(string portA, string portB);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAirportService/GetAllAirConnections", ReplyAction="http://tempuri.org/IAirportService/GetAllAirConnectionsResponse")]
     System.Threading.Tasks.Task<AirportResources.AirConnection[]> GetAllAirConnectionsAsync(string portA, string portB);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAirportService/GetAirConnections", ReplyAction="http://tempuri.org/IAirportService/GetAirConnectionsResponse")]
+    [System.ServiceModel.FaultContractAttribute(typeof(WcfAirportManagerLib.InvalidInputFault), Action="http://tempuri.org/IAirportService/GetAirConnectionsInvalidInputFaultFault", Name="InvalidInputFault", Namespace="http://schemas.datacontract.org/2004/07/WcfAirportManagerLib")]
+    [System.ServiceModel.FaultContractAttribute(typeof(WcfAirportManagerLib.NoConnectionsFault), Action="http://tempuri.org/IAirportService/GetAirConnectionsNoConnectionsFaultFault", Name="NoConnectionsFault", Namespace="http://schemas.datacontract.org/2004/07/WcfAirportManagerLib")]
     AirportResources.AirConnection[] GetAirConnections(string portA, string portB, System.DateTime from, System.DateTime to);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAirportService/GetAirConnections", ReplyAction="http://tempuri.org/IAirportService/GetAirConnectionsResponse")]

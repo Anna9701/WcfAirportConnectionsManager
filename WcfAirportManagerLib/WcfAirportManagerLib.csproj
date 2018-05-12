@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAirportService.cs" />
+    <Compile Include="InvalidInputFault.cs" />
+    <Compile Include="NoConnectionsFault.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AirportService.cs" />
   </ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,9 +12,14 @@ namespace WcfAirportManagerClient
         static void Main(string[] args)
         {
             AirportServiceClient client = new AirportServiceClient();
-            var conns = client.GetAllAirConnections("Warsaw", "Berlin");
-            // Use the 'client' variable to call operations on the service.
-            // Always close the client.
+            try
+            {
+                var conns = client.GetAllAirConnections("Warsaw2", "Berlin");
+            } catch (FaultException<WcfAirportManagerLib.NoConnectionsFault> ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+            }
+
             client.Close();
             System.Console.ReadKey();
         }
