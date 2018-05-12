@@ -92,6 +92,7 @@ namespace WcfAirportManagerClient
                 string portB = input[1];
                 if (!DateTime.TryParse(input[2], out DateTime departureTime) || !DateTime.TryParse(input[3], out DateTime arrivalTime))
                     throw new InvalidInputException("The provided time cannot be parsed.");
+                if (departureTime >= arrivalTime) throw new InvalidInputException("Provided arrival time should be later than departure");
                 connections = serviceClient.GetAirConnections(portA, portB, departureTime, arrivalTime);
             }
             else

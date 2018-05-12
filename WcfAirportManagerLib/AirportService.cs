@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.ServiceModel;
+using System.Text.RegularExpressions;
 
 namespace WcfAirportManagerLib
 {
@@ -34,6 +35,10 @@ namespace WcfAirportManagerLib
 
         private void CheckValidityOfAirports(string portA, string portB)
         {
+            if (!Regex.IsMatch(portA, @"^[a-zA-Z]+$") || !Regex.IsMatch(portB, @"^[a-zA-Z]+$"))
+                throw new FaultException<InvalidInputFault>(new InvalidInputFault(), "Provided airport name(s) is/are invalid.");
+            if (String.Equals(portA, portB, StringComparison.OrdinalIgnoreCase))
+                throw new FaultException<InvalidInputFault>(new InvalidInputFault(), "Provided airports are identical!");
             string errorMsg = "";
             if (!airConnectionsDatabase.ContainsAirport(portA))
                 errorMsg += portA + " ";
@@ -45,16 +50,17 @@ namespace WcfAirportManagerLib
             }
         }
 
-        public IList<AirConnection> GetAirConnections(string portA, string portB, DateTime from, DateTime to)
+        public IList<AirConnection> GetAirConnections(string portA, string portB, DateTime departure, DateTime arrival)
         {
             CheckValidityOfAirports(portA, portB);
+            if (departure >= arrival) throw new FaultException<InvalidInputFault>(new InvalidInputFault(), "Provided arrival time is not later than departure!");
             IList<AirConnection> list = new List<AirConnection>();
-            foreach (AirConnection conn in airConnectionsDatabase.GetAirConnections(portA, portB, from, to))
+            foreach (AirConnection conn in airConnectionsDatabase.GetAirConnections(portA, portB, departure, arrival))
             {
                 list.Add(conn);
             }
             if (list.Count == 0)
-                throw new FaultException<NoConnectionsFault>(new NoConnectionsFault(), new FaultReason("There is no any connection between those Airports!"));
+                throw new FaultException<NoConnectionsFault>(new NoConnectionsFault(), new FaultReason("There is no any connection between those airports in that time range!"));
             return list;
         }
 
