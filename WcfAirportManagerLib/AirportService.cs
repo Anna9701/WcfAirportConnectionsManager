@@ -65,6 +65,11 @@ namespace WcfAirportManagerLib
             {
                 list.Add(conn);
             }
+            foreach(AirConnection conn in airConnectionsDatabase.GetIndirectAirConnections(portA, portB, departure, arrival))
+            {
+                list.Add(conn);
+            }
+
             if (list.Count == 0)
                 throw new FaultException<NoConnectionsFault>(new NoConnectionsFault(), new FaultReason("There is no any connection between those airports in that time range!"));
             return list;

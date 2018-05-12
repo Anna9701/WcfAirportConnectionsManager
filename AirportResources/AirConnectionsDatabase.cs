@@ -41,7 +41,6 @@ namespace AirportResources
 
             foreach (var conn in AirConnections)
             {
-                //((AirConnection)conn).Connections.Clear();
                 if (conn.AirportA.Equals(portA) && conn.AirportB.Equals(portB))
                 {
                     connections.Add(conn);
@@ -63,14 +62,14 @@ namespace AirportResources
                     list2.Add(conn);
             }
             IList<IAirConnection> list3 = new List<IAirConnection>();
-            foreach (var conn in list1)
+            foreach (AirConnection conn in list1)
             {
-                foreach (var conn2 in list2)
+                foreach (AirConnection conn2 in list2)
                 {
-                    if (conn.AirportB.Equals(conn2.AirportA))
+                    if (conn.AirportB.Equals(conn2.AirportA) && conn2.DepartureTime >= conn.ArrivalTime)
                     {
-                        AirConnection result = (AirConnection)((AirConnection)conn).Clone();
-                        result.Connections.Add((AirConnection)conn2);
+                        AirConnection result = (AirConnection) conn.Clone();
+                        result.Connections.Add(conn2);
                         list3.Add(result);
                     }
                 }
@@ -78,7 +77,25 @@ namespace AirportResources
             return list3;
         }
 
-
+        public IList<IAirConnection> GetIndirectAirConnections(string portA, string portB, DateTime departureTime, DateTime arrivalTime)
+        {
+            IList<IAirConnection> allConnections = GetIndirectAirConnections(portA, portB);
+            IList<IAirConnection> connections = new List<IAirConnection>();
+            foreach (AirConnection conn in allConnections)
+            {
+                foreach (AirConnection conn2 in conn.Connections)
+                {
+                    if (departureTime <= conn.DepartureTime && departureTime < conn2.ArrivalTime)
+                        if (arrivalTime > conn.DepartureTime && arrivalTime >= conn2.ArrivalTime)
+                        {
+                            connections.Add(conn);
+                            break;
+                        }
+                    
+                }
+            }
+            return connections;
+        }
 
         public IList<IAirConnection> GetAirConnections (string portA, string portB, DateTime departureTime, DateTime arrivalTime)
         {
@@ -86,8 +103,8 @@ namespace AirportResources
             IList<IAirConnection> connections = new List<IAirConnection>();
             foreach (var conn in allConnections)
             {
-                if (departureTime >= conn.DepartureTime && departureTime < conn.ArrivalTime)
-                    if (arrivalTime > conn.DepartureTime && arrivalTime <= conn.ArrivalTime)
+                if (departureTime <= conn.DepartureTime && departureTime < conn.ArrivalTime)
+                    if (arrivalTime > conn.DepartureTime && arrivalTime >= conn.ArrivalTime)
                         connections.Add(conn);
             }
             return connections;
