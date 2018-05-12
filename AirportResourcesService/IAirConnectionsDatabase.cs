@@ -9,5 +9,6 @@ namespace AirportResourcesService
 
         void LoadAirConnections();
         IList<IAirConnection> GetAirConnections(string portA, string portB);
+        bool ContainsAirport(string name);
     }
 }

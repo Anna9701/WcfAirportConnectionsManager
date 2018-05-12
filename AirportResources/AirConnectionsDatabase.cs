@@ -7,6 +7,7 @@ namespace AirportResources
     public class AirConnectionsDatabase : IAirConnectionsDatabase
     {
         public IList<IAirConnection> AirConnections { get; private set; }
+        private ISet<string> Airports { get;  set; }
         public string CsvPath { get; set; }
 
         private IAirConnectionsReader connectionsReader;
@@ -14,6 +15,7 @@ namespace AirportResources
         public AirConnectionsDatabase(string csvPath)
         {
             CsvPath = csvPath;
+            Airports = new HashSet<string>();
             connectionsReader = new AirConnectionsReader();
             LoadAirConnections();
         }
@@ -21,6 +23,16 @@ namespace AirportResources
         public void LoadAirConnections()
         {
             AirConnections = connectionsReader.LoadDatabase(CsvPath);
+            foreach(var conn in AirConnections)
+            {
+                Airports.Add(conn.AirportA);
+                Airports.Add(conn.AirportB);
+            }
+        }
+
+        public bool ContainsAirport(string name)
+        {
+            return Airports.Contains(name);
         }
 
         public IList<IAirConnection> GetAirConnections (string portA, string portB)

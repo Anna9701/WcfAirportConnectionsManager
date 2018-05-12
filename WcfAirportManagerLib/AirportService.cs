@@ -19,20 +19,23 @@ namespace WcfAirportManagerLib
 
         public IList<AirConnection> GetAirConnections(string portA, string portB)
         {
-            IList<AirConnection> list = new List<AirConnection>();
+            string errorMsg = "";
+            if (!airConnectionsDatabase.ContainsAirport(portA))
+                errorMsg += portA + " ";
+            if (!airConnectionsDatabase.ContainsAirport(portB))
+                errorMsg += portB + " ";
+            if (errorMsg.Length > 0)
+            {
+                throw new FaultException<InvalidAirportFault>(new InvalidAirportFault(), new FaultReason(String.Format("There is no such airport(s): {0}", errorMsg)));
+            }
+            IList <AirConnection> list = new List<AirConnection>();
             foreach (AirConnection conn in airConnectionsDatabase.GetAirConnections(portA, portB))
             {
                 list.Add(conn);
             }
             if (list.Count == 0)
             {
-                NoConnectionsFault fault = new NoConnectionsFault
-                {
-                    Description = "No any connection available",
-                    Message = "There is no any connection between those Airports!",
-                    Result = false
-                };
-                throw new FaultException<NoConnectionsFault>(fault, new FaultReason(fault.Message));
+                throw new FaultException<NoConnectionsFault>(new NoConnectionsFault(), new FaultReason("There is no any connection between those Airports!"));
             }
             return list;
         }
