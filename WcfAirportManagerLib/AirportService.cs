@@ -32,7 +32,7 @@ namespace WcfAirportManagerLib
             return list;
         }
 
-        private bool CheckValidityOfAirports(string portA, string portB)
+        private void CheckValidityOfAirports(string portA, string portB)
         {
             string errorMsg = "";
             if (!airConnectionsDatabase.ContainsAirport(portA))
@@ -43,7 +43,6 @@ namespace WcfAirportManagerLib
             {
                 throw new FaultException<InvalidAirportFault>(new InvalidAirportFault(), new FaultReason(String.Format("There is no such airport(s): {0}", errorMsg)));
             }
-            return true;
         }
 
         public IList<AirConnection> GetAirConnections(string portA, string portB, DateTime from, DateTime to)
