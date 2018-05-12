@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace WcfAirportManagerClient
@@ -17,37 +18,85 @@ namespace WcfAirportManagerClient
 
         public void HandleClientInputsInLoop()
         {
+            bool nextIteration = true;
             do {
                 try {
                     DisplayPrompt();
+                    nextIteration = GetInput();
                 } catch (InvalidInputException ex) {
-                    Console.Error.WriteLine(String.Format("ERROR: {0}. Please, provide valid arguemnts.", ex.Message));
+                    Console.Error.WriteLine(String.Format("ERROR: {0}. Please, next time provide valid arguemnts.", ex.Message));
                 }
-            } while (GetInput());
+            } while (nextIteration);
             Console.Out.WriteLine("Bye");
         }
 
         private bool GetInput()
         {
-            var input = Console.ReadLine();
-            if (input.Length == QuitInputLenght && Char.ToUpper(input[0]).Equals('Q')) return false;
+            string sourcePort = String.Empty;
+            string destPort = String.Empty;
+
+            if (!GetInputArgument("Enter the source airport: ", ref sourcePort) || !GetInputArgument("Enter the destination airport: ", ref destPort)) 
+                return false;
+
+            if (!Regex.IsMatch(sourcePort, @"^[a-zA-Z]+$") || !Regex.IsMatch(destPort, @"^[a-zA-Z]+$"))
+                throw new InvalidInputException("Provided airport name(s) is/are invalid.");
+
+            if (String.Equals(sourcePort, destPort, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidInputException("Provided airports are identical!");
+
+            IList<string> input = new List<string>
+            {
+                sourcePort,
+                destPort
+            };
+
+            Console.WriteLine("Do you want to enter time ranges? Pres Y, if yes. Q to quit. Otherwise all available connections will be printed.");
+            var inputTimeChoiseKey = Console.ReadKey();
+            if (inputTimeChoiseKey.Key.Equals(ConsoleKey.Q)) return false;
+            if (inputTimeChoiseKey.Key.Equals(ConsoleKey.Y))
+            {
+                string fromTime = String.Empty;
+                string toTime = String.Empty;
+                if (!GetInputArgument("Enter the departure time: ", ref fromTime) ||
+                    !GetInputArgument("Enter the arrival time: ", ref toTime))
+                {
+                    return false;
+                }
+                input.Add(fromTime);
+                input.Add(toTime);
+            }
+
             HandleInput(input);
             return true;
         }
 
-        private void HandleInput(string input)
+        private bool GetInputArgument(string prompt, ref string airport)
         {
-            IList<string> dividedInput = input.Split(' ');
-            if (dividedInput.Count == AmountParametersForAllConnections)
-            {
-                var connections = serviceClient.GetAllAirConnections(dividedInput[0], dividedInput[1]);
-                PrintConnections(connections);
-            }
-            else if (dividedInput.Count == AmountParametersForConnectionInTimeRange)
-            {
+            Console.WriteLine(prompt);
+            airport = Console.ReadLine();
+            return !WantToExit(airport);
+        }
 
+        private bool WantToExit (string input) => input.Length == QuitInputLenght && Char.ToUpper(input[0]).Equals('Q');
+
+        private void HandleInput(IList<string> input)
+        {
+            IList<AirportResources.AirConnection> connections = new List<AirportResources.AirConnection>();
+            if (input.Count == AmountParametersForAllConnections)
+            {
+                connections = serviceClient.GetAirConnections(input[0], input[1], null, null);
             }
-            else throw new InvalidInputException("Provided number of arguments is wrong.");
+            else if (input.Count == AmountParametersForConnectionInTimeRange)
+            {
+                string portA = input[0];
+                string portB = input[1];
+                if (!DateTime.TryParse(input[2], out DateTime departureTime) || !DateTime.TryParse(input[3], out DateTime arrivalTime))
+                    throw new InvalidInputException("The provided time cannot be parsed.");
+                connections = serviceClient.GetAirConnections(portA, portB, departureTime, arrivalTime);
+            }
+            else
+                throw new InvalidInputException();
+            if (connections != null) PrintConnections(connections);
         }
 
         public void PrintConnections(IList<AirportResources.AirConnection> connections)
@@ -60,7 +109,7 @@ namespace WcfAirportManagerClient
 
         private void DisplayPrompt()
         {
-            Console.WriteLine("Enter <Departure Airport> <Destination Airport> and optionally <Departure time> <Arrival time>. If you want to quit, enter Q.");
+            Console.WriteLine("If you want to quit, enter Q.");
         }
 
         public void Dispose()

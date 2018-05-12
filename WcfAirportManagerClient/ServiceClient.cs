@@ -15,11 +15,14 @@ namespace WcfAirportManagerClient
             client.Close();
         }
 
-        public IList<AirportResources.AirConnection> GetAllAirConnections(string portA, string portB)
+        public IList<AirportResources.AirConnection> GetAirConnections(string portA, string portB, DateTime? from, DateTime? to)
         {
             try
             {
-                return client.GetAllAirConnections(portA, portB);
+                if (from.HasValue && to.HasValue)
+                    return client.GetAirConnections(portA, portB, from.Value, to.Value);
+                else
+                    return client.GetAllAirConnections(portA, portB);
             }
             catch (TimeoutException timeProblem)
             {
